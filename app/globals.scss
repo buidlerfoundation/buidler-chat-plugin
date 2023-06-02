@@ -1,0 +1,84 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --foreground-rgb: 0, 0, 0;
+  --background-start-rgb: 214, 219, 220;
+  --background-end-rgb: 255, 255, 255;
+  --color-accent: #092555;
+  --color-darkest-background: #121212;
+  --color-darkest-background80: #121212cc;
+  --color-backdrop: rgba(0, 0, 0, 0.75);
+  --color-lighter-background: #191919;
+  --color-highlight: #1e1e1e;
+  --color-stroke: #242424;
+  --color-success: #00d33f;
+  --color-success-hover: #00d33f80;
+  --color-medium: #fcb828;
+  --color-urgent: #d8292f;
+  --color-mention: #0584fe;
+  --color-blue: #1159d5;
+  --color-secondary-text: #727272;
+  --color-primary-text: #e8e8e8;
+  --color-dark-text: #222222;
+  --color-highlight-action: #1e1e1e;
+  --color-highlight-action-high: #363636;
+  --color-light-text: #acacac;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --foreground-rgb: 255, 255, 255;
+    --background-start-rgb: 0, 0, 0;
+    --background-end-rgb: 0, 0, 0;
+    --color-accent: #092555;
+    --color-darkest-background: #121212;
+    --color-darkest-background80: #121212cc;
+    --color-backdrop: rgba(0, 0, 0, 0.75);
+    --color-lighter-background: #191919;
+    --color-highlight: #1e1e1e;
+    --color-stroke: #242424;
+    --color-success: #00d33f;
+    --color-success-hover: #00d33f80;
+    --color-medium: #fcb828;
+    --color-urgent: #d8292f;
+    --color-mention: #0584fe;
+    --color-blue: #1159d5;
+    --color-secondary-text: #727272;
+    --color-primary-text: #e8e8e8;
+    --color-dark-text: #222222;
+    --color-highlight-action: #1e1e1e;
+    --color-highlight-action-high: #363636;
+    --color-light-text: #acacac;
+  }
+}
+
+body {
+  color: rgb(var(--foreground-rgb));
+  background-color: transparent !important;
+  font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif !important;
+}
+
+.normal-button {
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+div {
+  &:focus {
+    outline: none;
+  }
+}
+
+input {
+  background-color: transparent;
+  color: var(--color-primary-text);
+  line-height: 22px;
+  font-size: 16px;
+  border: none;
+  &:focus {
+    outline: none;
+  }
+}
