@@ -58,11 +58,23 @@ body {
   color: rgb(var(--foreground-rgb));
   background-color: transparent !important;
   font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif !important;
+  font-weight: 500 !important;
 }
 
 .normal-button {
   &:hover {
     cursor: pointer;
+  }
+}
+
+a {
+  color: var(--color-mention);
+  text-decoration: none;
+  &:focus {
+    color: var(--color-mention);
+  }
+  &:hover {
+    text-decoration: underline;
   }
 }
 
@@ -78,6 +90,19 @@ input {
   line-height: 22px;
   font-size: 16px;
   border: none;
+  &:focus {
+    outline: none;
+  }
+}
+
+img {
+  object-fit: cover;
+  user-select: none; /* standard syntax */
+  -webkit-user-select: none; /* webkit (safari, chrome) browsers */
+  -moz-user-select: none; /* mozilla browsers */
+  -khtml-user-select: none; /* webkit (konqueror) browsers */
+  -ms-user-select: none; /* IE10+ */
+  max-width: 100%;
   &:focus {
     outline: none;
   }

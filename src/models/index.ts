@@ -373,3 +373,115 @@ export interface Channel {
   is_dapp_extension_required?: boolean;
   firstItem?: boolean;
 }
+
+export interface AttachmentData {
+  file_id: string;
+  file_url?: string;
+  mimetype?: string;
+  original_name?: string;
+  is_uploaded?: boolean;
+  localFile?: LocalAttachment;
+}
+
+export interface TagData {
+  mention_id: string;
+  tag_type: string;
+}
+
+export interface ReactionData {
+  attachment_id: string;
+  emoji_id: string;
+  reaction_count: string;
+  skin: number;
+}
+
+export interface UserReaction {
+  attachment_id: string;
+  emoji_id: string;
+}
+
+export interface TaskData {
+  channels?: Array<Channel>;
+  comment_count: number;
+  creator: UserData;
+  creator_id: string;
+  reaction_data: ReactionData[];
+  status: "pinned" | "todo" | "doing" | "done" | "archived";
+  task_attachments?: AttachmentData[];
+  task_id: string;
+  task_tags: TagData[];
+  content: string;
+  up_votes: number;
+  user_reaction: UserReaction[];
+  assignee?: UserData;
+  due_date?: Date | string;
+  isHighLight?: boolean;
+  createdAt?: string;
+  updatedAt?: string;
+  total_messages?: string;
+  latest_reply_message_at?: string;
+  latest_reply_senders?: Array<string>;
+  total_reply_sender?: string;
+  root_message_channel_id: string;
+  message_created_at: string;
+  message_sender_id: string;
+  cid?: string;
+  uploadingIPFS?: boolean;
+  notification_type?: "alert" | "muted";
+  total_unread_notifications?: number;
+}
+
+export interface ConversationData {
+  content: string;
+  createdAt: string;
+  message_attachments: AttachmentData[];
+  message_id: string;
+  message_tag: TagData[];
+  reply_message_id: string;
+  plain_text: string;
+  sender_id: string;
+  updatedAt: string;
+  task?: TaskData;
+  isHead: boolean;
+  isSending?: boolean;
+  isConversationHead?: boolean;
+  reaction_data: Array<ReactionData>;
+  user_reaction: Array<UserReaction>;
+  entity_id: string;
+  entity_type: string;
+  metadata?: {
+    type: "scam_alert" | "asset";
+    data: {
+      content: string;
+      content_type: string;
+      created_at: string;
+      id: string;
+      updated_at: string;
+    };
+  };
+  is_scam_detected?: boolean;
+  files?: any[];
+}
+
+export interface MessageDateData {
+  type: "date";
+  value: string;
+}
+
+export interface MessageData extends ConversationData {
+  conversation_data?: ConversationData;
+}
+
+export type EmitMessageData = {
+  entity_id: string;
+  content: string;
+  plain_text: string;
+  mentions?: any[];
+  message_id?: string;
+  member_data?: { key: string; timestamp: number; user_id: string }[];
+  reply_message_id?: string;
+  text?: string;
+  entity_type?: string;
+  file_ids?: string[];
+  files?: LocalAttachment[];
+}

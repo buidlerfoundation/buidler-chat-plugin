@@ -16,6 +16,8 @@ export const AsyncKey = {
   refreshTokenExpire: `${Prefix}_refresh_token_expire_key`,
   loginType: `${Prefix}_login_key`,
   deviceId:`${Prefix}_device_id`,
+  deviceCode: `${Prefix}_device_code`,
+  generatedPrivateKey: `${Prefix}_generated_private_key`,
 };
 
 export const whiteListRefreshTokenApis = [

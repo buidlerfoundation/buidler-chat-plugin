@@ -1,0 +1,72 @@
+.message-photo-container {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-right: -10px;
+  .photo__wrap {
+    position: relative;
+  }
+  .photo-more {
+    position: absolute;
+    top: 10px;
+    bottom: 0;
+    left: 0;
+    right: 10px;
+    border-radius: 5px;
+    background-color: #000000bf;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    color: var(--color-primary-text);
+    font-size: 20px;
+    line-height: 24px;
+  }
+  .photo-item {
+    margin-top: 10px;
+    margin-right: 10px;
+    max-width: 100%;
+    height: calc((100vh - 50px) / 3);
+    width: auto;
+    border-radius: 5px;
+    background-color: var(--color-darkest-background);
+  }
+  .attachment-loading {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, 0.75);
+  }
+  .video {
+    max-width: 100%;
+    height: calc((100vh - 50px) / 3);
+    object-fit: contain;
+    border-radius: 5px;
+    background-color: var(--color-darkest-background);
+  }
+  .file-item {
+    padding: 15px 20px;
+    display: flex;
+    align-items: center;
+    border-radius: 5px;
+    margin-top: 10px;
+    width: 100%;
+    background-color: var(--color-highlight-action);
+    &:hover {
+      cursor: pointer;
+      background-color: var(--color-highlight-action-high);
+    }
+  }
+  .file-name {
+    margin: 0 20px;
+    font-size: 16px;
+    line-height: 26px;
+    flex: 1;
+  }
+}

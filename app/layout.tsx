@@ -5,6 +5,7 @@ import { Inter } from "next/font/google";
 import AppToastNotification from "components/AppToastNotification";
 import AuthProvider from "components/AuthProvider";
 import { Providers } from "store/Provider";
+import SocketProvider from "components/SocketProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,7 +19,9 @@ function RootLayout({ children }: { children: React.ReactNode }) {
     <html lang="en">
       <body className={inter.className}>
         <Providers>
-          <AuthProvider>{children}</AuthProvider>
+          <SocketProvider>
+            <AuthProvider>{children}</AuthProvider>
+          </SocketProvider>
         </Providers>
         <AppToastNotification />
       </body>

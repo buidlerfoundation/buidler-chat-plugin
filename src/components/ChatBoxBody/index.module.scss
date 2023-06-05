@@ -1,4 +1,31 @@
 .container {
   flex: 1;
-  overflow: auto;
+  flex-direction: column;
+  display: flex;
+  justify-content: flex-end;
+  overflow-y: auto;
+  position: relative;
+  .message-list {
+    display: flex;
+    flex-direction: column-reverse;
+    flex: 1;
+    position: relative;
+    overflow-y: auto;
+    overflow-x: hidden;
+    .date-title {
+      display: flex;
+      align-items: center;
+      margin-top: 10px;
+      color: var(--color-secondary-text);
+      padding: 0 10px;
+      font-size: 12px;
+      line-height: 14px;
+      .separate-line {
+        margin: 0 10px;
+        flex: 1;
+        background-color: var(--color-stroke);
+        height: 1px;
+      }
+    }
+  }
 }

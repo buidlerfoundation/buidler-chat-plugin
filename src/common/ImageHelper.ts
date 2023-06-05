@@ -19,7 +19,7 @@ class ImageHelper {
   buildImagePath = (
     name?: string,
     id?: string,
-    options?: string,
+    options: imageOptions = {},
     noParams = false
   ) => {
     const suffix = `plain/gs://${this.imgBucket}`;
@@ -30,8 +30,11 @@ class ImageHelper {
       return `${suffix}/${id}/${name}`;
     }
     let params = "";
-    if (options) {
-      params += `${options}/`;
+    if (options.w) {
+      params += `w:${options.w}/`;
+    }
+    if (options.h) {
+      params += `h:${options.h}/`;
     }
     return `${params}${suffix}/${id}/${name}`;
   };

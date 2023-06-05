@@ -1,9 +1,16 @@
 "use client";
 import api from "api";
 import { AsyncKey, LoginType } from "common/AppConfig";
-import { clearData, getCookie, setCookie } from "common/Cookie";
+import {
+  GeneratedPrivateKey,
+  clearData,
+  getCookie,
+  setCookie,
+} from "common/Cookie";
 import ImageHelper from "common/ImageHelper";
+import { useSocket } from "components/SocketProvider";
 import { ethers, utils } from "ethers";
+import { normalizePublicMessageData } from "helpers/ChannelHelper";
 import useAppDispatch from "hooks/useAppDispatch";
 import useChannelId from "hooks/useChannelId";
 import useCommunityId from "hooks/useCommunityId";
@@ -18,6 +25,7 @@ import {
   useState,
 } from "react";
 import { toast } from "react-hot-toast";
+import { MESSAGE_ACTIONS } from "reducers/MessageReducers";
 import { NETWORK_ACTIONS } from "reducers/NetworkReducers";
 import { logoutAction, USER_ACTIONS } from "reducers/UserReducers";
 import ChainId from "services/connectors/ChainId";
@@ -52,6 +60,7 @@ interface IAuthProps {
 
 const AuthProvider = ({ children, isPrivate }: IAuthProps) => {
   const router = useRouter();
+  const socket = useSocket();
   const [loading, setLoading] = useState(true);
   const [loadingWeb3Auth, setLoadingWeb3Auth] = useState(false);
   const communityId = useCommunityId();
@@ -77,6 +86,23 @@ const AuthProvider = ({ children, isPrivate }: IAuthProps) => {
     const channel = channelRes?.data?.find((el) => el.channel_id === channelId);
     dispatch(USER_ACTIONS.updateCurrentChannel(channel));
   }, [channelId, communityId, dispatch]);
+  const initialMessageData = useCallback(async () => {
+    if (!channelId) return;
+    const privateKey = await GeneratedPrivateKey();
+    const messageRes = await api.message.list(channelId);
+    if (messageRes.statusCode === 200) {
+      const messageData = normalizePublicMessageData(
+        messageRes.data,
+        privateKey,
+        messageRes.metadata?.encrypt_message_key
+      );
+      dispatch(MESSAGE_ACTIONS.updateList({ channelId, data: messageData }));
+    }
+  }, [channelId, dispatch]);
+  const onSocketConnected = useCallback(() => {
+    initialChannelData();
+    initialMessageData();
+  }, [initialChannelData, initialMessageData]);
   const initialUserData = useCallback(async () => {
     const userRes = await api.user.me();
     if (userRes.statusCode === 200) {
@@ -85,14 +111,14 @@ const AuthProvider = ({ children, isPrivate }: IAuthProps) => {
           user: userRes.data,
         })
       );
-      initialChannelData();
+      socket.initSocket(onSocketConnected);
     } else {
       dispatch(logoutAction());
       if (isPrivate) {
         router.replace("/started");
       }
     }
-  }, [dispatch, initialChannelData, isPrivate, router]);
+  }, [dispatch, isPrivate, onSocketConnected, router]);
   const handleResponseVerify = useCallback(
     async (res: any, loginType: string) => {
       dispatch(USER_ACTIONS.updateCurrentToken(res?.token));

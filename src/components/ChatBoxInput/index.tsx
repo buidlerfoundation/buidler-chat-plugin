@@ -1,4 +1,4 @@
-import React, { memo, useCallback } from "react";
+import React, { memo, useCallback, useEffect } from "react";
 import styles from "./index.module.scss";
 import images from "common/images";
 import ContentEditable, { ContentEditableEvent } from "react-contenteditable";
@@ -29,6 +29,23 @@ const ChatBoxInput = ({
     },
     [setText]
   );
+  const handleKeyDown = useCallback(
+    (e: React.KeyboardEvent<HTMLDivElement>) => {
+      if (e.key === "Enter" && !e.metaKey && !e.shiftKey) e.preventDefault();
+    },
+    []
+  );
+  useEffect(() => {
+    const keyDownListener = (e: any) => {
+      if (e.target.id === "message-input") {
+        onKeyDown?.(e);
+      }
+    };
+    window.addEventListener("keydown", keyDownListener);
+    return () => {
+      window.removeEventListener("keydown", keyDownListener);
+    };
+  }, [onKeyDown, text]);
   return (
     <div className={styles.container}>
       <div
@@ -47,8 +64,9 @@ const ChatBoxInput = ({
           <div className={`truncate ${styles.placeholder}`}>{placeholder}</div>
         )}
         <ContentEditable
+          id="message-input"
           html={text}
-          onKeyDown={onKeyDown}
+          onKeyDown={handleKeyDown}
           onChange={handleChangeText}
           placeholder={placeholder}
           className={styles.input}
