@@ -1,3 +1,3 @@
-import Panel from "pages/home";
+import Panel from "page/home";
 
 export default Panel

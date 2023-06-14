@@ -1,9 +1,8 @@
 import "./globals.scss";
-import "pages/plugin/index.scss";
+import "page/plugin/index.scss";
 import "components/AppToastNotification/index.scss";
 import { Inter } from "next/font/google";
 import Providers from "providers";
-import { ReduxProvider } from "store/ReduxProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -16,9 +15,7 @@ function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <body className={inter.className}>
-        <ReduxProvider>
-          <Providers>{children}</Providers>
-        </ReduxProvider>
+        <Providers>{children}</Providers>
       </body>
     </html>
   );

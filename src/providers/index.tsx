@@ -7,6 +7,7 @@ import { CssBaseline, ThemeProvider, createTheme } from "@mui/material";
 import data from "@emoji-mart/data";
 import { init } from "emoji-mart";
 import AppToastNotification from "components/AppToastNotification";
+import { ReduxProvider } from "store/ReduxProvider";
 init({ data });
 
 interface IProviders {
@@ -26,15 +27,17 @@ const Providers = ({ children }: IProviders) => {
     []
   );
   return (
-    <ThemeProvider theme={materialTheme}>
-      <SocketProvider>
-        <AuthProvider>
-          <ImageProvider>{children}</ImageProvider>
-          <AppToastNotification />
-        </AuthProvider>
-      </SocketProvider>
-      <CssBaseline />
-    </ThemeProvider>
+    <ReduxProvider>
+      <ThemeProvider theme={materialTheme}>
+        <SocketProvider>
+          <AuthProvider>
+            <ImageProvider>{children}</ImageProvider>
+            <AppToastNotification />
+          </AuthProvider>
+        </SocketProvider>
+        <CssBaseline />
+      </ThemeProvider>
+    </ReduxProvider>
   );
 };
 

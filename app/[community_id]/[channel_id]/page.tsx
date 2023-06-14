@@ -1,3 +1,3 @@
-import Home from "pages/plugin";
+import Home from "page/plugin";
 
 export default Home
