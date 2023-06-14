@@ -18,5 +18,5 @@ COPY --from=builder /usr/src/app/next.config.js ./
 COPY --from=builder /usr/src/app/public ./public
 COPY --from=builder /usr/src/app/.next ./.next
 COPY --from=builder /usr/src/app/node_modules ./node_modules
-EXPOSE 3002
+EXPOSE 3003
 CMD ["node_modules/.bin/next", "start"]
