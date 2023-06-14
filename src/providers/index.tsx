@@ -4,8 +4,10 @@ import SocketProvider from "./SocketProvider";
 import AuthProvider from "./AuthProvider";
 import ImageProvider from "./ImageProvider";
 import { CssBaseline, ThemeProvider, createTheme } from "@mui/material";
-import { Provider } from "react-redux";
-import store from "store";
+import data from "@emoji-mart/data";
+import { init } from "emoji-mart";
+import AppToastNotification from "components/AppToastNotification";
+init({ data });
 
 interface IProviders {
   children: React.ReactNode;
@@ -24,16 +26,15 @@ const Providers = ({ children }: IProviders) => {
     []
   );
   return (
-    <Provider store={store}>
-      <ThemeProvider theme={materialTheme}>
-        <SocketProvider>
-          <AuthProvider>
-            <ImageProvider>{children}</ImageProvider>
-          </AuthProvider>
-        </SocketProvider>
-        <CssBaseline />
-      </ThemeProvider>
-    </Provider>
+    <ThemeProvider theme={materialTheme}>
+      <SocketProvider>
+        <AuthProvider>
+          <ImageProvider>{children}</ImageProvider>
+          <AppToastNotification />
+        </AuthProvider>
+      </SocketProvider>
+      <CssBaseline />
+    </ThemeProvider>
   );
 };
 

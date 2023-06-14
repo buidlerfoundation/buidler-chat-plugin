@@ -78,7 +78,6 @@ const PhotoItem = ({ photo, handleFileClick }: PhotoItemProps) => {
     return (
       <div style={{ marginTop: 10, marginRight: 10 }}>
         <VideoLightBox
-          className={styles["video"]}
           originalSrc={imageHelper.normalizeImage(photo.file_url, teamId, {
             fm: "mp4",
           })}

@@ -2,7 +2,6 @@
 import React, { useState, useCallback, useEffect, CSSProperties } from "react";
 import IconBubble from "components/SVGs/IconBubble";
 import useAppDispatch from "hooks/useAppDispatch";
-import { setUserCommunityData } from "reducers/UserReducers";
 import CommunityFloat from "components/CommunityFloat";
 import useUser from "hooks/useUser";
 import LoginBottomSheet from "components/LoginBottomSheet";
@@ -10,6 +9,7 @@ import ChatBox from "components/ChatBox";
 import useCommunityId from "hooks/useCommunityId";
 import useChannelId from "hooks/useChannelId";
 import { getMessages } from "reducers/MessageReducers";
+import { setUserCommunityData } from "reducers/UserReducers";
 import { useAuth } from "providers/AuthProvider";
 
 export default function Home() {

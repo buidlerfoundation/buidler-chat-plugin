@@ -1,6 +1,7 @@
 import { MessageData } from "models";
 import Caller from "./Caller";
 import { getDeviceCode } from "common/Cookie";
+import { getMentionData } from "helpers/MessageHelper";
 
 const MessageAPI = {
   list: async (
@@ -41,8 +42,8 @@ const MessageAPI = {
       `messages/${messageId}/jump?device_code=${deviceCode}&limit=${limit}`
     );
   },
-  upVoteScam: (id) => Caller.post(`scam-alert/${id}/upvote`),
-  downVoteScam: (id) => Caller.post(`scam-alert/${id}/downvote`),
+  upVoteScam: (id: string) => Caller.post(`scam-alert/${id}/upvote`),
+  downVoteScam: (id: string) => Caller.post(`scam-alert/${id}/downvote`),
 };
 
 export default MessageAPI;

@@ -62,6 +62,7 @@ const messageSlice = createSlice({
         canMoreAfter,
         messageId,
       } = action.payload;
+      const currentData = state.messageData?.[channelId]?.data || []
       let msg = data;
       if (!after && (before || data.length === 0)) {
         msg = [...currentData, ...data];
@@ -130,7 +131,7 @@ const messageSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(logoutAction, () => initialState)
-      .addCase(getMessages.fulfilled, (state: MessageState, action) => {
+      .addCase(getMessages.fulfilled, (state: MessageState, action: any) => {
         const {
           data,
           after,
@@ -140,6 +141,7 @@ const messageSlice = createSlice({
           canMoreAfter,
           messageId,
         } = action.payload;
+        const currentData = state.messageData?.[channelId]?.data || []
         let msg = data;
         if (!after && (before || data.length === 0)) {
           msg = [...currentData, ...data];

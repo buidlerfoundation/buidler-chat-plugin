@@ -5,8 +5,8 @@ function useCommunityId() {
   const params = useParams();
   return useMemo(
     () =>
-      params.community_id?.toString?.(),
-    [params.community_id]
+      params?.community_id?.toString?.(),
+    [params?.community_id]
   );
 }
 

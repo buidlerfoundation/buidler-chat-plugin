@@ -19,7 +19,7 @@ const ChatBoxBody = ({channelId}: IChatBoxBody) => {
     if (!messages) return null;
     return normalizeMessages(messages);
   }, [messages]);
-  const renderMessage = useCallback((msg: MessageData | MessageDateData) => {
+  const renderMessage = useCallback((msg: any) => {
     if (msg.type === "date") {
       return (
         <li className={styles["date-title"]} key={msg.value}>

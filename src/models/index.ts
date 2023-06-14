@@ -469,11 +469,11 @@ export interface MessageDateData {
 }
 
 export interface MessageData extends ConversationData {
-  conversation_data?: ConversationData;
+  conversation_data?: ConversationData | null;
 }
 
 export type EmitMessageData = {
-  entity_id: string;
+  entity_id?: string;
   content: string;
   plain_text: string;
   mentions?: any[];

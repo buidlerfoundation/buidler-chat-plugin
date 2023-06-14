@@ -5,7 +5,7 @@ import { clearData, getCookie, setCookie } from "common/Cookie";
 import { useSocket } from "providers/SocketProvider";
 import { ethers, utils } from "ethers";
 import useAppDispatch from "hooks/useAppDispatch";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import {
   createContext,
   ReactNode,
@@ -50,13 +50,11 @@ interface IAuthProps {
 
 const AuthProvider = ({ children, isPrivate }: IAuthProps) => {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const socket = useSocket();
   const [loading, setLoading] = useState(true);
   const [loadingWeb3Auth, setLoadingWeb3Auth] = useState(false);
-  const ott = useMemo(
-    () => router.query?.ott?.toString?.(),
-    [router.query?.ott]
-  );
+  const ott = useMemo(() => searchParams?.get("ott"), [searchParams]);
   const dispatch = useAppDispatch();
   const getInitial = useCallback(async () => {
     const res = await api.user.getInitial();

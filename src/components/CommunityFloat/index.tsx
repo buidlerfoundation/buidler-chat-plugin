@@ -7,7 +7,7 @@ import IconMore from "components/SVGs/IconMore";
 import { useImage } from "providers/ImageProvider";
 
 type CommunityFloatProps = {
-  bubbleOpen: boolean;
+  bubbleOpen?: boolean;
 };
 
 const CommunityFloat = ({ bubbleOpen }: CommunityFloatProps) => {

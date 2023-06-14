@@ -3,11 +3,11 @@ import React, { useCallback, useState, useEffect } from "react";
 import styles from "./index.module.scss";
 import useUser from "hooks/useUser";
 import useAppDispatch from "hooks/useAppDispatch";
-import { getMessages } from "reducers/MessageReducers";
-import { setUserCommunityData } from "reducers/UserReducers";
 import ChatBox from "components/ChatBox";
 import LoginBottomSheet from "components/LoginBottomSheet";
 import { useAuth } from "providers/AuthProvider";
+import { getMessages } from "reducers/MessageReducers";
+import { setUserCommunityData } from "reducers/UserReducers";
 
 const Panel = () => {
   const dispatch = useAppDispatch();

@@ -22,7 +22,7 @@ const MessageItem = ({
   const isBot = useMemo(() => !!message.metadata, [message.metadata]);
   const sender = useMemo(() => DeletedUser, []);
   const showAvatar = useMemo(() => {
-    return message.isHead || message.task || !!message.reply_message_id;
+    return message.isHead || !!message.task || !!message.reply_message_id;
   }, [message.isHead, message.task, message.reply_message_id]);
   const renderSpaceLeft = useCallback(() => {
     if (showAvatar) return null;

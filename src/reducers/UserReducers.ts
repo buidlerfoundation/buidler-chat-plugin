@@ -5,7 +5,7 @@ import {
   PayloadAction,
 } from "@reduxjs/toolkit";
 import api from "api";
-import { Channel, Community, InitialApiData, UserData } from "models";
+import { Channel, Community, InitialApiData, InitialNetwork, UserData } from "models";
 
 interface UserState {
   data: UserData;
@@ -14,6 +14,7 @@ interface UserState {
   currentToken: string;
   community?: Community;
   channel?: Channel;
+  networks?: InitialNetwork;
 }
 
 const initialState: UserState = {

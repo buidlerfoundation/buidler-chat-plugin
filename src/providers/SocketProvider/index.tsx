@@ -74,8 +74,7 @@ const SocketProvider = ({ children }: ISocketProps) => {
         upgrade: false,
       });
       socket.current?.on("connect_error", (err) => {
-        const message = err.message || err;
-        toast.error(message);
+        toast.error(err.message);
       });
       socket.current?.on("connect", () => {
         console.log("socket connected");
@@ -89,16 +88,17 @@ const SocketProvider = ({ children }: ISocketProps) => {
   const emitMessage = useCallback(
     (payload: EmitMessageData) => {
       // Handle sending message
+      const message: any = {
+        ...payload,
+        createdAt: new Date().toISOString(),
+        sender_id: user.user_id,
+        isSending: true,
+        conversation_data: null,
+        content: payload.text,
+        plain_text: payload.text,
+      }
       dispatch(
-        MESSAGE_ACTIONS.emitMessage({
-          ...payload,
-          createdAt: new Date().toISOString(),
-          sender_id: user.user_id,
-          isSending: true,
-          conversation_data: null,
-          content: payload.text,
-          plain_text: payload.text,
-        })
+        MESSAGE_ACTIONS.emitMessage(message)
       );
       socket.current?.emit("NEW_MESSAGE", payload);
     },
