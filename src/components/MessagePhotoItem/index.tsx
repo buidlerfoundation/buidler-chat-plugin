@@ -2,11 +2,11 @@ import React, { useCallback, useMemo } from "react";
 import VideoLightBox from "../VideoLightBox";
 import { AttachmentData } from "models";
 import styles from "./index.module.scss";
-import ImageHelper from "common/ImageHelper";
 import useCommunityId from "hooks/useCommunityId";
 import { CircularProgress } from "@mui/material";
 import images from "common/images";
 import ImgLightBox from "components/ImgLightBox";
+import { useImage } from "providers/ImageProvider";
 
 type PhotoItemProps = {
   photo: AttachmentData;
@@ -15,6 +15,7 @@ type PhotoItemProps = {
 
 const PhotoItem = ({ photo, handleFileClick }: PhotoItemProps) => {
   const teamId = useCommunityId();
+  const imageHelper = useImage();
   const handleClick = useCallback(
     () => handleFileClick(photo),
     [handleFileClick, photo]
@@ -78,13 +79,13 @@ const PhotoItem = ({ photo, handleFileClick }: PhotoItemProps) => {
       <div style={{ marginTop: 10, marginRight: 10 }}>
         <VideoLightBox
           className={styles["video"]}
-          originalSrc={ImageHelper.normalizeImage(photo.file_url, teamId, {
+          originalSrc={imageHelper.normalizeImage(photo.file_url, teamId, {
             fm: "mp4",
           })}
         >
           <img
             className={styles["video"]}
-            src={ImageHelper.normalizeImage(
+            src={imageHelper.normalizeImage(
               photo.file_url?.replace(/\..*$/g, "_thumbnail.png"),
               teamId
             )}
@@ -96,12 +97,12 @@ const PhotoItem = ({ photo, handleFileClick }: PhotoItemProps) => {
   }
   return (
     <ImgLightBox
-      originalSrc={ImageHelper.normalizeImage(photo.file_url, teamId)}
+      originalSrc={imageHelper.normalizeImage(photo.file_url, teamId)}
     >
       <img
         className={styles["photo-item"]}
         alt=""
-        src={ImageHelper.normalizeImage(photo.file_url, teamId, {
+        src={imageHelper.normalizeImage(photo.file_url, teamId, {
           h: Math.round((window.innerHeight - 50) / 3),
         })}
       />
@@ -121,14 +122,15 @@ const MessagePhotoItem = ({
   isMore,
 }: MessagePhotoItemProps) => {
   const teamId = useCommunityId();
+  const imageHelper = useImage();
   const handleFileClick = useCallback(
     (photo: AttachmentData) => {
       window.open(
-        ImageHelper.normalizeImage(photo.file_url, teamId || "", {}, true),
+        imageHelper.normalizeImage(photo.file_url, teamId || "", {}, true),
         "_blank"
       );
     },
-    [teamId]
+    [imageHelper, teamId]
   );
   const morePhoto = useMemo(() => {
     if (isMore) return photos.length - 1;
@@ -141,10 +143,7 @@ const MessagePhotoItem = ({
   const renderPhoto = useCallback(
     (photo: AttachmentData, index: number) => (
       <div className={styles["photo__wrap"]} key={`${photo?.file_id}`}>
-        <PhotoItem
-          photo={photo}
-          handleFileClick={handleFileClick}
-        />
+        <PhotoItem photo={photo} handleFileClick={handleFileClick} />
         {morePhoto > 1 && index === attachmentData.length - 1 && (
           <div className={styles["photo-more"]}>+{morePhoto - 1}</div>
         )}

@@ -1,19 +1,10 @@
 "use client";
 import api from "api";
 import { AsyncKey, LoginType } from "common/AppConfig";
-import {
-  GeneratedPrivateKey,
-  clearData,
-  getCookie,
-  setCookie,
-} from "common/Cookie";
-import ImageHelper from "common/ImageHelper";
-import { useSocket } from "components/SocketProvider";
+import { clearData, getCookie, setCookie } from "common/Cookie";
+import { useSocket } from "providers/SocketProvider";
 import { ethers, utils } from "ethers";
-import { normalizePublicMessageData } from "helpers/ChannelHelper";
 import useAppDispatch from "hooks/useAppDispatch";
-import useChannelId from "hooks/useChannelId";
-import useCommunityId from "hooks/useCommunityId";
 import { useRouter } from "next/navigation";
 import {
   createContext,
@@ -25,7 +16,6 @@ import {
   useState,
 } from "react";
 import { toast } from "react-hot-toast";
-import { MESSAGE_ACTIONS } from "reducers/MessageReducers";
 import { NETWORK_ACTIONS } from "reducers/NetworkReducers";
 import { logoutAction, USER_ACTIONS } from "reducers/UserReducers";
 import ChainId from "services/connectors/ChainId";
@@ -63,8 +53,6 @@ const AuthProvider = ({ children, isPrivate }: IAuthProps) => {
   const socket = useSocket();
   const [loading, setLoading] = useState(true);
   const [loadingWeb3Auth, setLoadingWeb3Auth] = useState(false);
-  const communityId = useCommunityId();
-  const channelId = useChannelId();
   const ott = useMemo(
     () => router.query?.ott?.toString?.(),
     [router.query?.ott]
@@ -73,36 +61,10 @@ const AuthProvider = ({ children, isPrivate }: IAuthProps) => {
   const getInitial = useCallback(async () => {
     const res = await api.user.getInitial();
     if (res.statusCode === 200) {
-      ImageHelper.initial(
-        res.data?.imgproxy.domain,
-        res.data?.imgproxy.bucket_name
-      );
       dispatch(USER_ACTIONS.initial(res.data));
     }
   }, [dispatch]);
-  const initialChannelData = useCallback(async () => {
-    if (!communityId || !channelId) return;
-    const channelRes = await api.channel.list(communityId);
-    const channel = channelRes?.data?.find((el) => el.channel_id === channelId);
-    dispatch(USER_ACTIONS.updateCurrentChannel(channel));
-  }, [channelId, communityId, dispatch]);
-  const initialMessageData = useCallback(async () => {
-    if (!channelId) return;
-    const privateKey = await GeneratedPrivateKey();
-    const messageRes = await api.message.list(channelId);
-    if (messageRes.statusCode === 200) {
-      const messageData = normalizePublicMessageData(
-        messageRes.data,
-        privateKey,
-        messageRes.metadata?.encrypt_message_key
-      );
-      dispatch(MESSAGE_ACTIONS.updateList({ channelId, data: messageData }));
-    }
-  }, [channelId, dispatch]);
-  const onSocketConnected = useCallback(() => {
-    initialChannelData();
-    initialMessageData();
-  }, [initialChannelData, initialMessageData]);
+  const onSocketConnected = useCallback(() => {}, []);
   const initialUserData = useCallback(async () => {
     const userRes = await api.user.me();
     if (userRes.statusCode === 200) {
@@ -118,6 +80,7 @@ const AuthProvider = ({ children, isPrivate }: IAuthProps) => {
         router.replace("/started");
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch, isPrivate, onSocketConnected, router]);
   const handleResponseVerify = useCallback(
     async (res: any, loginType: string) => {

@@ -1,4 +1,10 @@
-import { createAction, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import {
+  createAction,
+  createAsyncThunk,
+  createSlice,
+  PayloadAction,
+} from "@reduxjs/toolkit";
+import api from "api";
 import { Channel, Community, InitialApiData, UserData } from "models";
 
 interface UserState {
@@ -22,6 +28,27 @@ const initialState: UserState = {
 };
 
 export const logoutAction = createAction("user/logout");
+
+export const setUserCommunityData = createAsyncThunk(
+  "user/community",
+  async (payload: { communityId: string; channelId: string }) => {
+    const { communityId, channelId } = payload;
+    const [communityRes, channelRes] = await Promise.all([
+      api.community.byId(communityId),
+      api.channel.list(communityId),
+    ]);
+    const community = communityRes?.data;
+    if (community) {
+      community.total_members = communityRes.metadata?.total_members;
+      community.total_online_members =
+        communityRes.metadata?.total_online_members;
+    }
+    return {
+      community,
+      channel: channelRes?.data?.find((el) => el.channel_id === channelId),
+    };
+  }
+);
 
 const userSlice = createSlice({
   name: "user",
@@ -60,13 +87,18 @@ const userSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(logoutAction, (state: UserState) => {
-      return {
-        ...initialState,
-        imgBucket: state.imgBucket,
-        imgDomain: state.imgDomain,
-      };
-    });
+    builder
+      .addCase(logoutAction, (state: UserState) => {
+        return {
+          ...initialState,
+          imgBucket: state.imgBucket,
+          imgDomain: state.imgDomain,
+        };
+      })
+      .addCase(setUserCommunityData.fulfilled, (state: UserState, action) => {
+        state.community = action.payload.community;
+        state.channel = action.payload.channel;
+      });
   },
 });
 
