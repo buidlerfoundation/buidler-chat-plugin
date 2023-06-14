@@ -6,8 +6,12 @@ import { titleMessageFromNow } from "utils/DateUtils";
 import { normalizeMessages } from "helpers/MessageHelper";
 import MessageItem from "components/MessageItem";
 
-const ChatBoxBody = () => {
-  const messageData = useMessageData();
+interface IChatBoxBody {
+  channelId?: string;
+}
+
+const ChatBoxBody = ({channelId}: IChatBoxBody) => {
+  const messageData = useMessageData(channelId);
   const messages = useMemo(() => messageData?.data || [], [messageData?.data]);
   const messagesGroup = useMemo<Array<
     MessageData | MessageDateData

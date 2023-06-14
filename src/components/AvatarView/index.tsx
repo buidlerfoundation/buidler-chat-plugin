@@ -1,9 +1,9 @@
 import React, { memo, useCallback, useMemo } from "react";
-import ImageHelper from "common/ImageHelper";
 import images from "common/images";
 import { UserData } from "models";
 import styles from "./index.module.scss";
 import IconUser from "components/SVGs/IconUser";
+import { useImage } from "providers/ImageProvider";
 
 type AvatarViewProps = {
   user?: UserData | null;
@@ -12,6 +12,7 @@ type AvatarViewProps = {
 };
 
 const AvatarView = ({ user, size = 25, bot }: AvatarViewProps) => {
+  const imageHelper = useImage()
   const handleErrorAvatar = useCallback(
     ({ currentTarget }: React.SyntheticEvent<HTMLImageElement, Event>) => {
       currentTarget.onerror = null; // prevents looping
@@ -20,8 +21,8 @@ const AvatarView = ({ user, size = 25, bot }: AvatarViewProps) => {
     []
   );
   const resource = useMemo(() => {
-    return ImageHelper.normalizeImage(user?.avatar_url, user?.user_id);
-  }, [user?.avatar_url, user?.user_id]);
+    return imageHelper.normalizeImage(user?.avatar_url, user?.user_id);
+  }, [imageHelper, user?.avatar_url, user?.user_id]);
   const renderStatus = useCallback(() => {
     if (bot) {
       return (

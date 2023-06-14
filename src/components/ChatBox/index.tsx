@@ -9,12 +9,16 @@ import {
   extractContentMessage,
   getMentionData,
 } from "helpers/MessageHelper";
-import { useSocket } from "components/SocketProvider";
 import { debounce } from "lodash";
 import { EmitMessageData } from "models";
 import { getUniqueId } from "helpers/GenerateUUID";
+import { useSocket } from "providers/SocketProvider";
 
-const ChatBox = () => {
+interface IChatBox {
+  channelId?: string;
+}
+
+const ChatBox = ({channelId}: IChatBox) => {
   const [text, setText] = useState("");
   const channel = useAppSelector((state) => state.user.channel);
   const socket = useSocket();
@@ -46,7 +50,7 @@ const ChatBox = () => {
   return (
     <div className={styles.container}>
       <ChatBoxHead />
-      <ChatBoxBody />
+      <ChatBoxBody channelId={channelId} />
       <ChatBoxInput
         text={text}
         setText={setText}
