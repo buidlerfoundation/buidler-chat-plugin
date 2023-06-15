@@ -3,7 +3,10 @@ import React, { memo, useCallback, useMemo } from "react";
 import styles from "./index.module.scss";
 import AvatarView from "components/AvatarView";
 import { dateFormatted, messageFromNow } from "utils/DateUtils";
-import { normalizeMessageTextPlain } from "helpers/MessageHelper";
+import {
+  normalizeMessageTextPlain,
+  normalizeUserName,
+} from "helpers/MessageHelper";
 import { normalizeMessageText } from "helpers/MessageHelper";
 import MessagePhotoItem from "components/MessagePhotoItem";
 
@@ -20,7 +23,11 @@ const MessageItem = ({
 }: MessageItemProps) => {
   const isBot = useMemo(() => !!message.metadata, [message.metadata]);
   const sender = useMemo<UserData>(
-    () => ({ user_id: message.sender_id, user_name: message.sender_id, avatar_url: '' }),
+    () => ({
+      user_id: message.sender_id,
+      user_name: normalizeUserName(message.sender_id),
+      avatar_url: "",
+    }),
     [message.sender_id]
   );
   const showAvatar = useMemo(() => {
