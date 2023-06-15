@@ -96,7 +96,6 @@ const AuthProvider = ({ children, isPrivate }: IAuthProps) => {
     [dispatch, initialUserData]
   );
   const checkingAuth = useCallback(async () => {
-    console.log('XXX: ', document.cookie);
     setLoading(true);
     await getInitial();
     const accessToken = await getCookie(AsyncKey.accessTokenKey);
