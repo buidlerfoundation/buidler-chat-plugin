@@ -1,8 +1,7 @@
-import { MessageData } from "models";
+import { MessageData, UserData } from "models";
 import React, { memo, useCallback, useMemo } from "react";
 import styles from "./index.module.scss";
 import AvatarView from "components/AvatarView";
-import { DeletedUser } from "common/AppConfig";
 import { dateFormatted, messageFromNow } from "utils/DateUtils";
 import { normalizeMessageTextPlain } from "helpers/MessageHelper";
 import { normalizeMessageText } from "helpers/MessageHelper";
@@ -20,7 +19,10 @@ const MessageItem = ({
   disableHover,
 }: MessageItemProps) => {
   const isBot = useMemo(() => !!message.metadata, [message.metadata]);
-  const sender = useMemo(() => DeletedUser, []);
+  const sender = useMemo<UserData>(
+    () => ({ user_id: message.sender_id, user_name: message.sender_id, avatar_url: '' }),
+    [message.sender_id]
+  );
   const showAvatar = useMemo(() => {
     return message.isHead || !!message.task || !!message.reply_message_id;
   }, [message.isHead, message.task, message.reply_message_id]);

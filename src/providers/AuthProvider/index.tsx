@@ -282,7 +282,15 @@ const AuthProvider = ({ children, isPrivate }: IAuthProps) => {
         loadingWeb3Auth,
       }}
     >
-      {loading && <div />}
+      {loading && (
+        <div
+          style={{
+            width: "100%",
+            height: "100vh",
+            backgroundColor: "var(--color-lighter-background)",
+          }}
+        />
+      )}
       {!loading && children}
     </AuthContext.Provider>
   );

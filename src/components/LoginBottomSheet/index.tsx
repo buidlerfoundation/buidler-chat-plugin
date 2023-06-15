@@ -4,7 +4,7 @@ import React, { memo, useEffect, useState } from "react";
 import styles from "./index.module.scss";
 
 type LoginBottomSheetProps = {
-  open: boolean;
+  open: boolean | null;
   onClose: () => void;
   onConnectWalletClick: () => void;
 };
@@ -16,14 +16,12 @@ const LoginBottomSheet = ({
 }: LoginBottomSheetProps) => {
   const [closed, setClosed] = useState(false);
   useEffect(() => {
-    if (window.location.pathname !== "/panel") {
-      if (open) {
-        setClosed(false);
-      } else {
-        setTimeout(() => {
-          setClosed(true);
-        }, 290);
-      }
+    if (open) {
+      setClosed(false);
+    } else if (open === false) {
+      setTimeout(() => {
+        setClosed(true);
+      }, 290);
     }
   }, [open]);
   if (closed) return null;

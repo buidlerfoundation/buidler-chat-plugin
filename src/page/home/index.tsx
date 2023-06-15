@@ -13,7 +13,7 @@ const Panel = () => {
   const dispatch = useAppDispatch();
   const user = useUser();
   const auth = useAuth();
-  const [openLogin, setOpenLogin] = useState(false);
+  const [openLogin, setOpenLogin] = useState<boolean | null>(null);
   const communityId = "24439d55-3509-4e25-9ff9-362ce2f0a8c2";
   const channelId = "806f7d08-927c-4fe1-9c2f-bd9d442dd9ab";
   const toggleLogin = useCallback(
