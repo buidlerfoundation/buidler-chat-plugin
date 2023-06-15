@@ -16,12 +16,14 @@ const LoginBottomSheet = ({
 }: LoginBottomSheetProps) => {
   const [closed, setClosed] = useState(false);
   useEffect(() => {
-    if (open) {
-      setClosed(false);
-    } else {
-      setTimeout(() => {
-        setClosed(true);
-      }, 290);
+    if (window.location.pathname !== "/panel") {
+      if (open) {
+        setClosed(false);
+      } else {
+        setTimeout(() => {
+          setClosed(true);
+        }, 290);
+      }
     }
   }, [open]);
   if (closed) return null;

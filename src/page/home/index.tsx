@@ -34,8 +34,15 @@ const Panel = () => {
     }
   }, [openLogin, user.user_id]);
   useEffect(() => {
+    if (!user.user_id) {
+      setOpenLogin(true);
+    }
+  }, [user.user_id]);
+  useEffect(() => {
     if (channelId && user.user_id) {
-      dispatch(getMessages({ channelId }));
+      setTimeout(() => {
+        dispatch(getMessages({ channelId }));
+      }, 1000);
     }
   }, [channelId, dispatch, user.user_id]);
   useEffect(() => {
