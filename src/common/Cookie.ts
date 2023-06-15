@@ -15,6 +15,10 @@ export const clearData = (callback = () => {}) => {
 
 export const setCookie = (key: string, val: any) => {
   return new Promise<void>((resolve, reject) => {
+    window.parent.postMessage(
+      { type: "buidler-plugin-set-cookie", key, value: val },
+      { targetOrigin: "*" }
+    );
     store.dispatch(SESSION_ACTIONS.updateSession({ key, value: val }));
     Cookies.set(key, val);
     return resolve();
