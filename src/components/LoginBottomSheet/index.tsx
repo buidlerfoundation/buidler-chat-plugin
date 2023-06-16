@@ -14,7 +14,7 @@ const LoginBottomSheet = ({
   onClose,
   onConnectWalletClick,
 }: LoginBottomSheetProps) => {
-  const [closed, setClosed] = useState(false);
+  const [closed, setClosed] = useState(true);
   useEffect(() => {
     if (open) {
       setClosed(false);
