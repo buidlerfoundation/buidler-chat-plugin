@@ -102,7 +102,7 @@ const AuthProvider = ({ children, isPrivate }: IAuthProps) => {
     if (ott) {
       const res = await api.user.generateTokenFromOTT(ott);
       if (res.success) {
-        handleResponseVerify(res.data, LoginType.OTT);
+        await handleResponseVerify(res.data, LoginType.OTT);
       } else if (isPrivate) {
         router.replace("/started");
       }
