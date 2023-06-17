@@ -5,6 +5,7 @@ const images = {
   iconVideoPlay: "/assets/images/ic_video_play.svg",
   icFile: "/assets/images/ic_file.svg",
   icDownload: "/assets/images/ic_download.svg",
+  icClearText: "/assets/images/ic_clear_text.png",
 };
 
 export default images;

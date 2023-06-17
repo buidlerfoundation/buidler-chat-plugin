@@ -53,7 +53,7 @@ const Panel = () => {
   return (
     <main className="flex min-h-screen flex-col items-center justify-between">
       <div className={styles.container}>
-        {user.user_id && <ChatBox channelId={channelId} />}
+        {user.user_id && <ChatBox />}
         <LoginBottomSheet
           open={openLogin}
           onClose={toggleLogin}

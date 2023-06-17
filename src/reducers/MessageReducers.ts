@@ -18,6 +18,8 @@ interface MessageState {
   apiController?: AbortController | null;
   highlightMessageId?: string;
   loadMoreAfterMessage?: boolean;
+  loadMoreMessage?: boolean;
+  loadingMessage?: boolean;
 }
 
 const initialState: MessageState = {
@@ -27,10 +29,15 @@ const initialState: MessageState = {
 
 export const getMessages = createAsyncThunk(
   "message/get",
-  async (payload: { channelId: string }) => {
-    const { channelId } = payload;
+  async (payload: { channelId: string; before?: string; after?: string }) => {
+    const { channelId, before, after } = payload;
     const privateKey = await GeneratedPrivateKey();
-    const messageRes = await api.message.list(channelId);
+    const messageRes = await api.message.list(
+      channelId,
+      undefined,
+      before,
+      after
+    );
     if (messageRes.statusCode === 200) {
       const messageData = normalizePublicMessageData(
         messageRes.data,
@@ -40,6 +47,8 @@ export const getMessages = createAsyncThunk(
       return {
         channelId,
         data: messageData,
+        before,
+        after,
       };
     }
   }
@@ -62,7 +71,7 @@ const messageSlice = createSlice({
         canMoreAfter,
         messageId,
       } = action.payload;
-      const currentData = state.messageData?.[channelId]?.data || []
+      const currentData = state.messageData?.[channelId]?.data || [];
       let msg = data;
       if (!after && (before || data.length === 0)) {
         msg = [...currentData, ...data];
@@ -131,6 +140,20 @@ const messageSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(logoutAction, () => initialState)
+      .addCase(getMessages.pending, (state, action) => {
+        if (action.meta.arg.before) {
+          state.loadMoreMessage = true;
+        } else if (action.meta.arg.after) {
+          state.loadMoreAfterMessage = true;
+        } else {
+          state.loadingMessage = true;
+        }
+      })
+      .addCase(getMessages.rejected, (state) => {
+        state.loadMoreAfterMessage = false;
+        state.loadingMessage = false;
+        state.loadMoreAfterMessage = false;
+      })
       .addCase(getMessages.fulfilled, (state: MessageState, action: any) => {
         const {
           data,
@@ -141,13 +164,16 @@ const messageSlice = createSlice({
           canMoreAfter,
           messageId,
         } = action.payload;
-        const currentData = state.messageData?.[channelId]?.data || []
+        const currentData = state.messageData?.[channelId]?.data || [];
         let msg = data;
         if (!after && (before || data.length === 0)) {
           msg = [...currentData, ...data];
         } else if (after || data.length === 0) {
           msg = [...data, ...currentData];
         }
+        state.loadMoreAfterMessage = false;
+        state.loadingMessage = false;
+        state.loadMoreMessage = false;
         state.messageData[channelId] = {
           data: normalizeMessage(msg),
           canMore:

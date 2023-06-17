@@ -49,4 +49,11 @@
       line-height: 26px;
     }
   }
+  .attachment-container {
+    padding: 0 0 0 15px;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-top: -5px;
+  }
 }

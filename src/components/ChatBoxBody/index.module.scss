@@ -28,4 +28,14 @@
       }
     }
   }
+  .message-load-more {
+    position: absolute;
+    top: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    background-color: var(--color-lighter-background);
+    color: var(--color-secondary-text);
+  }
 }
